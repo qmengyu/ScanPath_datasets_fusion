@@ -22,7 +22,7 @@ if not os.path.exists(imgspath_save):
 val_imgspath_save = "/data/03-scanpath/datasets_new/OSIE/images/val/"
 if not os.path.exists(val_imgspath_save):
     os.mkdir(val_imgspath_save)
-
+num = 0
 train_gt_num = 0
 val_gt_num = 0
 gtspathdir = os.listdir(gtspath)
@@ -35,6 +35,10 @@ for index in range(len(gtspathdir)):
     gt_path = os.path.join(gtspath, gt_name)
     img_name_path = os.path.join(imgs_path, img_name)
 
+    img = Image.open(img_name_path)
+    imgSize = img.size  # 大小/尺寸
+    print(imgSize)
+
     fixations_all = scio.loadmat(gt_path)
     fixations_all = fixations_all['fixations_all']
 
@@ -43,6 +47,12 @@ for index in range(len(gtspathdir)):
         gt_fixation = fixations_all[n][0]
         gt_fixation = np.array([gt_fixation[:, 1], gt_fixation[:, 0]])
         gt_fixation = gt_fixation.T - 1
+
+        if any(gt_fixation[:, 0] >= imgSize[1]) or any(gt_fixation[:, 0] < 0) \
+                or any(gt_fixation[:, 1] >= imgSize[0]) or any(gt_fixation[:, 1] < 0):
+            # print("img_size", img_size)
+            # print(gt_fixation)
+            num += 1
 
         gt_fixations.append(gt_fixation)
         if index < 560:
@@ -64,3 +74,4 @@ for index in range(len(gtspathdir)):
     # shutil.copy(img_name_path, img_save_path)
 print(train_gt_num, 'train_gt_num')
 print(val_gt_num, 'val_gt_num')
+print(num)

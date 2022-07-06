@@ -42,10 +42,11 @@ for index in range(6000):
         gt_fixation = np.array([gt_fixation[:, 1], gt_fixation[:, 0]])
         gt_fixation = gt_fixation.T - 1
 
-        if any(gt_fixation[:, 0] > img_size[0]) or any(gt_fixation[:, 0] < 0) \
-                or any(gt_fixation[:, 1] > img_size[1]) or any(gt_fixation[:, 1] < 0):
+        if any(gt_fixation[:, 0] >= img_size[0]) or any(gt_fixation[:, 0] < 0) \
+                or any(gt_fixation[:, 1] >= img_size[1]) or any(gt_fixation[:, 1] < 0):
             # print("img_size", img_size)
             # print(gt_fixation)
+
             num += 1
         else:
             gt_fixations.append(gt_fixation)
@@ -65,6 +66,7 @@ for index in range(6000):
 
     # io.savemat(gt_save_path, {'gt_fixations': gt_fixations, 'image_size': img_size})
     # shutil.copy(img_name_path, img_save_path)
-print(num)
+
 print(train_gt_num, 'train_gt_num')
 print(val_gt_num, 'val_gt_num')
+print(num)
