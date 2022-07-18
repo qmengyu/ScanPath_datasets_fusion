@@ -1,8 +1,6 @@
 import os
-from scipy import io
 import numpy as np
 import scipy.io as scio
-import shutil
 from PIL import Image
 gts_path = '/data/03-scanpath/datasets/MIT/gt'
 gtspath_save = "/data/03-scanpath/datasets_new/MIT/gts/train"
